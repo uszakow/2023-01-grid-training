@@ -1,0 +1,81 @@
+/********************************/
+/*     INSTRUKCJE WARUNKOWE     */
+/********************************/
+// operatowy porównania: >, >=, =<, <, ==, !=
+// słowa kluczowe: true, false
+// operatory logiczne: and, or, not
+$var1: 2;
+$var2: 10;
+
+// Sass wspiera instrukcje warunkowe za pomocą słów kluczowych "@if", "@else if" i "@else"
+@function getColor($par1, $par2) {
+  @if($par1 <=5 and not($par2 ==10)) {
+    @return green;
+  }
+
+  @else if ($par1 > 0 or $par2 > 20) {
+    @return yellow;
+  }
+
+  // @else {
+  //   @return red;
+  // }
+
+  @return red;
+}
+
+.div-conditional {
+  width: 200px;
+  height: 200px;
+  color: getColor($var1, $var2); // wywołanie funkcji, która ma w sobie instrukcję warunkową
+  background-color: if($var1 < $var2, green, red); // if może być użyty poza funkcją; jeżeli warunek się spełni to zostanie zwrócony pierwszy rezultat, w przeciwnym przypadku drugi rezultat
+
+  @if($var1 ==2) {
+    // instrukcja warunkowa może być użyta bezpośrednio w selektorze, a nie w funkcji
+    border: 5px solid black;
+  }
+
+  @else {
+    padding: 20px;
+  }
+}
+
+
+/********************************/
+/*            PĘTLE             */
+/********************************/
+$colors: red, green, blue, yellow, #9000DD, rgb(200, 123, 0);
+
+// pętla "for"
+@for $i from 1 through length($colors) {
+  #for#{$i} {
+    background-color: nth($colors, $i);
+  }
+}
+
+.for-div {
+  width: 100%;
+  height: 50px;
+}
+
+// pętla "each" dla każdego elementu listy $colors
+$i: 1;
+
+@each $color in $colors {
+  #each#{$i} {
+    background-color: $color;
+  }
+
+  $i: $i + 1;
+}
+
+// pętla "while"
+$i: 1;
+
+@while $i <=6 {
+  #while#{$i} {
+    color: nth($colors, $i);
+  }
+
+  $i: $i + 1;
+}

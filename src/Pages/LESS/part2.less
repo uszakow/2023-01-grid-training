@@ -1,0 +1,132 @@
+@var-from-second-file: 24px;
+
+
+/********************************/
+/*     INSTRUKCJE WARUNKOWE     */
+/********************************/
+// operatowy porównania: >, >=, =, =<, <
+// słowa kluczowe: true, false
+// OR: ","
+// AND: "and"
+// NOT: "not"
+@var1: 5;
+@var2: 10;
+
+.mixin-conditional-background when (@var1 <= 5) and (@var2 > 0) { // mixin z warunkiem bez parametrów
+  background-color: yellow;
+}
+
+.mixin-conditional-color(@color) when not (@color=black) { // mixin z warunkami może mieć parametry i nawet uzależnić warunek od parametrów
+  color: @color;
+}
+.mixin-conditional-color(@color) when (@color=black) { // mixin o takiej samej nazwie i z taką samą liczbą parametrów ale z innym warunkiem zadziała jako "else"
+  color: #555;
+}
+
+.div-conditional {
+  width: 200px;
+  height: 200px;
+  border: 1px solid black;
+  .mixin-conditional-background;
+  .mixin-conditional-color(black);
+}
+
+
+/********************************/
+/*    MIXINY POZA SELEKTOREM    */
+/********************************/
+// istnieje opcja tworzenia styli w mixinie z dalszym wywołaniem mixina (a nie użyciem go w środku innego selektora) w zależności od warunku
+@mixin-div-styled: true; // zmienna z warunkiem
+@mixin-p-styled: true;
+
+.mixin-optional1() when (@mixin-div-styled) { // tworzymy mixin z parametrami za pomocą nawiasów (), mimo że przyjmuje 0 parametrów - taki mixin nie tworzy klasy i może być wywołany
+  .div-optional-styles {
+    color: red;
+  }
+}
+.mixin-optional1; // wywołujemy powyższy mixin poza selektorem
+
+// mixin może mieć kilka nie powiązanych między sobą warunków
+.mixin-optional2() when (@mixin-div-styled) {
+  .div-optional-styles {
+    background-color: green;
+  }
+}
+& when (@mixin-p-styled) { // drugi warunek, który odpowiada za style dla innego selektora
+  .p-optional-styles {
+    background-color: yellow;
+  }
+}
+.mixin-optional2;
+
+
+/********************************/
+/*       FUNKCJE WBUDOWANE      */
+/********************************/
+/*
+Sprawdzanie typu:
+- iscolor
+- isnumber
+- isstring
+- iskeyword
+- isurl
+
+Sprawdzanie jednostek:
+- ispixel
+- ispercentage
+- isem
+- isunit
+*/
+
+// @conditional-value: #AA00AA;
+// @conditional-value: 123;
+// @conditional-value: '123';
+// @conditional-value: url("image/image.jpg");
+// @conditional-value: 10px; // funkcje "isnumber" oraz "ispixel" zwrócą true
+@conditional-value: 5rem;
+@check-result: 'brak operacji';
+
+// .truth (@value) when (isurl(@value)) {
+//   @check-result: 'zmienna przechowuje url';
+// }
+// .truth (@value) when (isnumber(@value)) {
+//   @check-result: 'zmienna przechowuje liczbę';
+// }
+// .truth (@value) when (ispixel(@value)) {
+//   @check-result: 'jednostką zmiennej jest px';
+// }
+.truth (@value) when (isunit(@value, 'rem')) {
+  @check-result: 'jednostką zmiennej jest rem';
+}
+
+.p-conditional-value::after {
+  content: '@{conditional-value}';
+}
+.p-conditional-result::after {
+  .truth(@conditional-value);
+  content: @check-result;
+}
+
+
+/********************************/
+/*            PĘTLE             */
+/********************************/
+@background: #00D500;
+
+.for-div {
+  display: inline-block;
+  width: 20px;
+  border: 1px solid black;
+}
+
+// w LESS zamiast pętli można wykorzystać rekurencję, czyli stworzyć mixin, który wywołuje sam siebie
+.loop-style(@bg; @counter; @min: 1) when (@counter >= @min) {
+  #for@{counter} { // każdy kolejny id będzie miał inne style
+    height: (10px * @counter);
+    background-color: darken(@bg, 3.5% * @counter);
+  }
+
+  .loop-style(@bg; @counter - 1; @min); // zmieniamy znaczenie @counter przy wywołaniu, żeby pętla nie była nieskończona
+}
+
+.loop-style(@background, 10); // wywołanie mixina

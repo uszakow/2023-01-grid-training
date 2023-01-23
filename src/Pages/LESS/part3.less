@@ -1,0 +1,122 @@
+/********************************/
+/*     OPERACJE NA LISTACH      */
+/********************************/
+@colors: red, green, blue, yellow, pink;
+
+.list-colors (@counter: 1) when (@counter <= 5) {
+  .list-colors (@counter + 1); // wywołujemy rekurencyjnie mixin z inną wartością
+
+  #list-item@{counter} { // tworzymy różne style dla różnych id (#list-item1, #list-item2 etc)
+    background-color: extract(@colors, @counter); // do styli zapisujemy kolejny element listy
+  }
+}
+
+.list-colors; // wywołujemy mixin
+
+.margins (...) { // przyjmujemy jakieś argumenty
+  margin-top: extract(@arguments, 1); // zmienna "@arguments" ma w sobie parametry mixina
+  margin-right: extract(@arguments, 2);
+  margin-bottom: extract(@arguments, 3);
+  margin-left: extract(@arguments, length(@arguments));
+}
+
+.list-item-div {
+  height: 50px;
+  border: 1px solid black;
+  .margins (5px 10px 15px 20px);
+}
+
+
+/********************************/
+/*    OPERACJE MATEMATYCZNE     */
+/********************************/
+/*
+Zaokrąglenie wartości:
+- cell(number) - zaokrągla w górę
+- floor(number) - zaokrągla w dół
+- round(number) - zaokrągla do najbliższej wartości
+
+Operacje matematyczne nie obięte operatorami:
+- sqrt(number)
+- pow(number1, number2)
+- mod(number1, number2) - dzielenie modulo
+
+Porównywanie liczb:
+- min(number1, ..., numberN)
+- max(number1, ..., numberN)
+
+Funkcje trygonometryczne:
+- sin(kąt) - kąt trzeba podawać w radianach
+- cos(kąt)
+- tan(kąt)
+
+Funkcje cyklometryczne:
+- asin(kąt)
+- acos(kąt)
+- atan(kąt)
+
+Inne:
+- percentage(number) - zwraca ciąg znaków w postaci wartości procentowej
+- abs(number) - zwraca wartość absolutną
+- pi() - zwraca liczbę pi
+*/
+
+@height: 150px;
+@corect: @height;
+
+@div-q: 100;
+
+.sin(@counter: 1; @max: @div-q) when (@counter <= @max) {
+  .math-operation-div:nth-child(@{counter}) {
+    height: sin((@counter / 10)) * @height + @corect;
+  }
+
+  .sin(@counter + 1);
+}
+
+.sin();
+
+.math-operation-div {
+  display: inline-block;
+  width: 4px;
+  height: @height + @corect;
+  background-color: red;
+}
+
+
+/********************************/
+/*     OPERACJE NA KOLORACH     */
+/********************************/
+/*
+saturate(kolor, proc) - zwiększa nasycenie; kolor przyjmuje w formacie hsl
+desaturate(kolor, proc) - zmniejsza nasycenie
+lighten(kolor, proc) - rozjaśnia
+darken(kolor, proc) - przyciemnia
+fadein(kolor, proc) - zmniejsza przezroczystość
+fadeout(kolor, proc) - zwiększa przezroczystość
+fade(kolor, proc) - nakłada przezroczystość
+tint(kolor, proc) - zwiększa proporcje bieli
+shade(kolor, proc) - zwiększa proporcje czerni
+greyscale(kolor) - skala szarości
+*/
+
+// @color: hsl(90, 0%, 50%);
+@color: rgb(0, 255, 0);
+
+@height: 20px;
+@bars: 30;
+
+.loop (@counter: 1) when (@counter <= @bars){
+  .loop (@counter + 1);
+
+  #color-operation@{counter} {
+    // background-color: saturate(@color, 2.5% * @counter);
+    background-color: greyscale(shade(@color, 2.5% * @counter));
+  }
+}
+
+.loop();
+
+.color-operation {
+  height: @height;
+}

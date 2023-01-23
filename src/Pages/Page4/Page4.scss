@@ -1,0 +1,31 @@
+.page4 {
+  &-container {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+
+    gap: 10px;
+
+    background-color: rgb(240, 198, 71);
+    margin: 20px;
+  }
+}
+
+@media (max-width: 600px) {
+  .page4 {
+    &-container {
+      grid-template-columns: 1fr;
+    }
+
+    &-col1 {
+      order: 1;
+    }
+
+    &-col2 {
+      order: 2;
+    }
+
+    &-col3 {
+      order: 3;
+    }
+  }
+}

@@ -1,0 +1,809 @@
+/********************************/
+/*           ZMIENNE            */
+/********************************/
+.h1-variables {
+  font-size: 60px;
+  font-weight: bold;
+  background-color: rgba(255, 123, 64, 0.7);
+}
+.p-variables {
+  border: 1px solid #B80F0A;
+}
+.p-variables::after {
+  content: "Dodany tekst";
+  color: #B80F0A;
+}
+.image-background-variables {
+  height: 400px;
+  background-image: url('./../../images/image.jpg');
+}
+/********************************/
+/*            LISTY             */
+/********************************/
+#list::after {
+  content: '1, 2, 3, "string", some-text';
+}
+#list-lenght::after {
+  content: '5';
+}
+#list-first-element::after {
+  content: '1';
+}
+#list-last-element::after {
+  content: 'some-text';
+}
+#second-list::after {
+  content: '1 2 3, 4, 5';
+}
+#second-list-length::after {
+  content: '3';
+}
+#second-list-1element::after {
+  content: '1 2 3';
+}
+#second-list-2element::after {
+  content: '4';
+}
+#second-list-3element::after {
+  content: '5';
+}
+/********************************/
+/*            MIXINY            */
+/********************************/
+.flex-center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.mixin-div {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: darkred;
+  background-color: green;
+  padding: 10px 20px 30px 10px;
+  margin: 25px 15px 30px;
+}
+.mixin-line {
+  width: 50px;
+  display: inline-block;
+  background-color: blue;
+}
+#mixin-line1 {
+  width: 50px;
+  display: inline-block;
+  background-color: blue;
+  height: 200px;
+}
+#mixin-line2 {
+  width: 50px;
+  display: inline-block;
+  background-color: blue;
+  height: 100px;
+}
+#mixin-line3 {
+  width: 50px;
+  display: inline-block;
+  background-color: blue;
+  height: 66.66666667px;
+}
+#mixin-line4 {
+  width: 50px;
+  display: inline-block;
+  background-color: blue;
+  height: 50px;
+}
+.mixin-variabled1 {
+  color: yellow;
+  background-color: green;
+  border: 5px solid red;
+}
+.mixin-variabled2 {
+  color: white;
+  background-color: grey;
+  padding: 15px 25px;
+  border: 5px solid black;
+}
+/********************************/
+/*         ZAGNIEŻDŻANIE        */
+/********************************/
+.nesting .nesting-header {
+  color: blue;
+}
+.nesting-content {
+  color: yellow;
+}
+.nesting-link {
+  color: green;
+}
+.nesting-link:hover {
+  color: red;
+}
+.nesting-footer {
+  font-size: 28px;
+}
+.nesting-footer::after {
+  content: 'this text is in after';
+  color: orange;
+}
+/********************************/
+/*         ROZSZERZENIE         */
+/********************************/
+.title,
+.h1-extended,
+.h2-extended,
+.h3-extended {
+  font-family: 'Courier New', Courier, monospace;
+  text-align: center;
+  padding: 10px 20px;
+  color: #335500;
+}
+/*
+w tym przypadku kompilator "nie wie", że różne klasy wykorzystują ten sam mixin
+kompilator zgeneruje następny kod:
+.h1-not-extended {
+  font-size: 40px;
+  font-family: 'Courier New', Courier, monospace;
+  text-align: center;
+  padding: 10px 20px;
+  color: #335500;
+}
+.h2-not-extended {
+  font-size: 35px;
+  font-family: 'Courier New', Courier, monospace;
+  text-align: center;
+  padding: 10px 20px;
+  color: #335500;
+}
+.h3-not-extended {
+  font-size: 30px;
+  font-family: 'Courier New', Courier, monospace;
+  text-align: center;
+  padding: 10px 20px;
+  color: #335500;
+}
+jak widać, w klasach powtarzają się te same linijki kodu, co powoduje nadmiar obiętości pliku CSS
+*/
+.h1-not-extended {
+  font-size: 40px;
+  font-family: 'Courier New', Courier, monospace;
+  text-align: center;
+  padding: 10px 20px;
+  color: #335500;
+}
+.h2-not-extended {
+  font-size: 35px;
+  font-family: 'Courier New', Courier, monospace;
+  text-align: center;
+  padding: 10px 20px;
+  color: #335500;
+}
+.h3-not-extended {
+  font-size: 30px;
+  font-family: 'Courier New', Courier, monospace;
+  text-align: center;
+  padding: 10px 20px;
+  color: #335500;
+}
+/*
+w przypadku wykorzystania pseudoklasy ":extend()" kompilator "wie", że różne klasy będą mieć ten sam fragment kodu
+zgenerowany kod wygląda następująco:
+.title,
+.h1-extended,
+.h2-extended,
+.h3-extended {
+  font-family: 'Courier New', Courier, monospace;
+  text-align: center;
+  padding: 10px 20px;
+  color: #335500;
+}
+.h1-extended {
+  font-size: 40px;
+}
+.h2-extended {
+  font-size: 35px;
+}
+.h3-extended {
+  font-size: 30px;
+}
+wszystkie powtarzające się elementy są w jednym miejscu, dlatego obiętość kodu jest mniejsza
+*/
+.h1-extended {
+  font-size: 40px;
+}
+.h2-extended {
+  font-size: 35px;
+}
+.h3-extended {
+  font-size: 30px;
+}
+/********************************/
+/*   SCALANIE LIST WŁAŚCIWOŚCI  */
+/********************************/
+.mixin-shadow {
+  box-shadow: inset 0 0 10px #555;
+}
+.mixin-div-with-shadow-incorrect {
+  box-shadow: inset 0 0 10px #555;
+  box-shadow: 0 0 20px black;
+  padding: 15px;
+}
+.mixin-div-with-shadow-correct {
+  box-shadow: inset 0 0 10px #555, 0 0 20px black;
+  padding: 15px;
+}
+/********************************/
+/*           IMPORTY            */
+/********************************/
+/********************************/
+/*     INSTRUKCJE WARUNKOWE     */
+/********************************/
+.mixin-conditional-background {
+  background-color: yellow;
+}
+.div-conditional {
+  width: 200px;
+  height: 200px;
+  border: 1px solid black;
+  background-color: yellow;
+  color: #555;
+}
+/********************************/
+/*    MIXINY POZA SELEKTOREM    */
+/********************************/
+.div-optional-styles {
+  color: red;
+}
+.p-optional-styles {
+  background-color: yellow;
+}
+.div-optional-styles {
+  background-color: green;
+}
+/********************************/
+/*       FUNKCJE WBUDOWANE      */
+/********************************/
+/*
+Sprawdzanie typu:
+- iscolor
+- isnumber
+- isstring
+- iskeyword
+- isurl
+
+Sprawdzanie jednostek:
+- ispixel
+- ispercentage
+- isem
+- isunit
+*/
+.p-conditional-value::after {
+  content: '5rem';
+}
+.p-conditional-result::after {
+  content: 'jednostką zmiennej jest rem';
+}
+/********************************/
+/*            PĘTLE             */
+/********************************/
+.for-div {
+  display: inline-block;
+  width: 20px;
+  border: 1px solid black;
+}
+#for10 {
+  height: 100px;
+  background-color: #002300;
+}
+#for9 {
+  height: 90px;
+  background-color: #003400;
+}
+#for8 {
+  height: 80px;
+  background-color: #004600;
+}
+#for7 {
+  height: 70px;
+  background-color: #005800;
+}
+#for6 {
+  height: 60px;
+  background-color: #006a00;
+}
+#for5 {
+  height: 50px;
+  background-color: #007c00;
+}
+#for4 {
+  height: 40px;
+  background-color: #008e00;
+}
+#for3 {
+  height: 30px;
+  background-color: #009f00;
+}
+#for2 {
+  height: 20px;
+  background-color: #00b100;
+}
+#for1 {
+  height: 10px;
+  background-color: #00c300;
+}
+/********************************/
+/*     OPERACJE NA LISTACH      */
+/********************************/
+#list-item5 {
+  background-color: pink;
+}
+#list-item4 {
+  background-color: yellow;
+}
+#list-item3 {
+  background-color: blue;
+}
+#list-item2 {
+  background-color: green;
+}
+#list-item1 {
+  background-color: red;
+}
+.list-item-div {
+  height: 50px;
+  border: 1px solid black;
+  margin-top: 5px;
+  margin-right: 10px;
+  margin-bottom: 15px;
+  margin-left: 20px;
+}
+/********************************/
+/*    OPERACJE MATEMATYCZNE     */
+/********************************/
+/*
+Zaokrąglenie wartości:
+- cell(number) - zaokrągla w górę
+- floor(number) - zaokrągla w dół
+- round(number) - zaokrągla do najbliższej wartości
+
+Operacje matematyczne nie obięte operatorami:
+- sqrt(number)
+- pow(number1, number2)
+- mod(number1, number2) - dzielenie modulo
+
+Porównywanie liczb:
+- min(number1, ..., numberN)
+- max(number1, ..., numberN)
+
+Funkcje trygonometryczne:
+- sin(kąt) - kąt trzeba podawać w radianach
+- cos(kąt)
+- tan(kąt)
+
+Funkcje cyklometryczne:
+- asin(kąt)
+- acos(kąt)
+- atan(kąt)
+
+Inne:
+- percentage(number) - zwraca ciąg znaków w postaci wartości procentowej
+- abs(number) - zwraca wartość absolutną
+- pi() - zwraca liczbę pi
+*/
+.math-operation-div:nth-child(1) {
+  height: 21.99666833px;
+}
+.math-operation-div:nth-child(2) {
+  height: 23.97338662px;
+}
+.math-operation-div:nth-child(3) {
+  height: 25.91040413px;
+}
+.math-operation-div:nth-child(4) {
+  height: 27.78836685px;
+}
+.math-operation-div:nth-child(5) {
+  height: 29.58851077px;
+}
+.math-operation-div:nth-child(6) {
+  height: 31.29284947px;
+}
+.math-operation-div:nth-child(7) {
+  height: 32.88435374px;
+}
+.math-operation-div:nth-child(8) {
+  height: 34.34712182px;
+}
+.math-operation-div:nth-child(9) {
+  height: 35.66653819px;
+}
+.math-operation-div:nth-child(10) {
+  height: 36.8294197px;
+}
+.math-operation-div:nth-child(11) {
+  height: 37.8241472px;
+}
+.math-operation-div:nth-child(12) {
+  height: 38.64078172px;
+}
+.math-operation-div:nth-child(13) {
+  height: 39.27116371px;
+}
+.math-operation-div:nth-child(14) {
+  height: 39.7089946px;
+}
+.math-operation-div:nth-child(15) {
+  height: 39.94989973px;
+}
+.math-operation-div:nth-child(16) {
+  height: 39.99147206px;
+}
+.math-operation-div:nth-child(17) {
+  height: 39.83329621px;
+}
+.math-operation-div:nth-child(18) {
+  height: 39.47695262px;
+}
+.math-operation-div:nth-child(19) {
+  height: 38.92600175px;
+}
+.math-operation-div:nth-child(20) {
+  height: 38.18594854px;
+}
+.math-operation-div:nth-child(21) {
+  height: 37.26418733px;
+}
+.math-operation-div:nth-child(22) {
+  height: 36.16992808px;
+}
+.math-operation-div:nth-child(23) {
+  height: 34.91410424px;
+}
+.math-operation-div:nth-child(24) {
+  height: 33.50926361px;
+}
+.math-operation-div:nth-child(25) {
+  height: 31.96944288px;
+}
+.math-operation-div:nth-child(26) {
+  height: 30.31002744px;
+}
+.math-operation-div:nth-child(27) {
+  height: 28.5475976px;
+}
+.math-operation-div:nth-child(28) {
+  height: 26.699763px;
+}
+.math-operation-div:nth-child(29) {
+  height: 24.78498658px;
+}
+.math-operation-div:nth-child(30) {
+  height: 22.82240016px;
+}
+.math-operation-div:nth-child(31) {
+  height: 20.83161325px;
+}
+.math-operation-div:nth-child(32) {
+  height: 18.83251713px;
+}
+.math-operation-div:nth-child(33) {
+  height: 16.84508612px;
+}
+.math-operation-div:nth-child(34) {
+  height: 14.88917796px;
+}
+.math-operation-div:nth-child(35) {
+  height: 12.98433545px;
+}
+.math-operation-div:nth-child(36) {
+  height: 11.14959113px;
+}
+.math-operation-div:nth-child(37) {
+  height: 9.40327718px;
+}
+.math-operation-div:nth-child(38) {
+  height: 7.76284218px;
+}
+.math-operation-div:nth-child(39) {
+  height: 6.24467682px;
+}
+.math-operation-div:nth-child(40) {
+  height: 4.86395009px;
+}
+.math-operation-div:nth-child(41) {
+  height: 3.63445778px;
+}
+.math-operation-div:nth-child(42) {
+  height: 2.56848455px;
+}
+.math-operation-div:nth-child(43) {
+  height: 1.67668127px;
+}
+.math-operation-div:nth-child(44) {
+  height: 0.96795852px;
+}
+.math-operation-div:nth-child(45) {
+  height: 0.44939765px;
+}
+.math-operation-div:nth-child(46) {
+  height: 0.12617993px;
+}
+.math-operation-div:nth-child(47) {
+  height: 0.00153485px;
+}
+.math-operation-div:nth-child(48) {
+  height: 0.07670782px;
+}
+.math-operation-div:nth-child(49) {
+  height: 0.35094775px;
+}
+.math-operation-div:nth-child(50) {
+  height: 0.82151451px;
+}
+.math-operation-div:nth-child(51) {
+  height: 1.48370635px;
+}
+.math-operation-div:nth-child(52) {
+  height: 2.33090689px;
+}
+.math-operation-div:nth-child(53) {
+  height: 3.35465116px;
+}
+.math-operation-div:nth-child(54) {
+  height: 4.54471025px;
+}
+.math-operation-div:nth-child(55) {
+  height: 5.88919349px;
+}
+.math-operation-div:nth-child(56) {
+  height: 7.37466724px;
+}
+.math-operation-div:nth-child(57) {
+  height: 8.98628915px;
+}
+.math-operation-div:nth-child(58) {
+  height: 10.70795641px;
+}
+.math-operation-div:nth-child(59) {
+  height: 12.5224667px;
+}
+.math-operation-div:nth-child(60) {
+  height: 14.41169004px;
+}
+.math-operation-div:nth-child(61) {
+  height: 16.35674991px;
+}
+.math-operation-div:nth-child(62) {
+  height: 18.33821194px;
+}
+.math-operation-div:nth-child(63) {
+  height: 20.33627801px;
+}
+.math-operation-div:nth-child(64) {
+  height: 22.3309841px;
+}
+.math-operation-div:nth-child(65) {
+  height: 24.30239976px;
+}
+.math-operation-div:nth-child(66) {
+  height: 26.23082727px;
+}
+.math-operation-div:nth-child(67) {
+  height: 28.09699841px;
+}
+.math-operation-div:nth-child(68) {
+  height: 29.88226702px;
+}
+.math-operation-div:nth-child(69) {
+  height: 31.56879529px;
+}
+.math-operation-div:nth-child(70) {
+  height: 33.13973197px;
+}
+.math-operation-div:nth-child(71) {
+  height: 34.5793808px;
+}
+.math-operation-div:nth-child(72) {
+  height: 35.87335728px;
+}
+.math-operation-div:nth-child(73) {
+  height: 37.00873241px;
+}
+.math-operation-div:nth-child(74) {
+  height: 37.97416192px;
+}
+.math-operation-div:nth-child(75) {
+  height: 38.75999954px;
+}
+.math-operation-div:nth-child(76) {
+  height: 39.35839344px;
+}
+.math-operation-div:nth-child(77) {
+  height: 39.76336468px;
+}
+.math-operation-div:nth-child(78) {
+  height: 39.97086691px;
+}
+.math-operation-div:nth-child(79) {
+  height: 39.97882684px;
+}
+.math-operation-div:nth-child(80) {
+  height: 39.78716493px;
+}
+.math-operation-div:nth-child(81) {
+  height: 39.39779622px;
+}
+.math-operation-div:nth-child(82) {
+  height: 38.81461113px;
+}
+.math-operation-div:nth-child(83) {
+  height: 38.04343668px;
+}
+.math-operation-div:nth-child(84) {
+  height: 37.09197816px;
+}
+.math-operation-div:nth-child(85) {
+  height: 35.96974225px;
+}
+.math-operation-div:nth-child(86) {
+  height: 34.68794196px;
+}
+.math-operation-div:nth-child(87) {
+  height: 33.2593846px;
+}
+.math-operation-div:nth-child(88) {
+  height: 31.69834386px;
+}
+.math-operation-div:nth-child(89) {
+  height: 30.02041713px;
+}
+.math-operation-div:nth-child(90) {
+  height: 28.2423697px;
+}
+.math-operation-div:nth-child(91) {
+  height: 26.38196725px;
+}
+.math-operation-div:nth-child(92) {
+  height: 24.45779828px;
+}
+.math-operation-div:nth-child(93) {
+  height: 22.48908847px;
+}
+.math-operation-div:nth-child(94) {
+  height: 20.49550851px;
+}
+.math-operation-div:nth-child(95) {
+  height: 18.49697759px;
+}
+.math-operation-div:nth-child(96) {
+  height: 16.51346438px;
+}
+.math-operation-div:nth-child(97) {
+  height: 14.56478747px;
+}
+.math-operation-div:nth-child(98) {
+  height: 12.67041741px;
+}
+.math-operation-div:nth-child(99) {
+  height: 10.84928212px;
+}
+.math-operation-div:nth-child(100) {
+  height: 9.11957778px;
+}
+.math-operation-div {
+  display: inline-block;
+  width: 4px;
+  height: 40px;
+  background-color: red;
+}
+/********************************/
+/*     OPERACJE NA KOLORACH     */
+/********************************/
+/*
+saturate(kolor, proc) - zwiększa nasycenie; kolor przyjmuje w formacie hsl
+desaturate(kolor, proc) - zmniejsza nasycenie
+lighten(kolor, proc) - rozjaśnia
+darken(kolor, proc) - przyciemnia
+fadein(kolor, proc) - zmniejsza przezroczystość
+fadeout(kolor, proc) - zwiększa przezroczystość
+fade(kolor, proc) - nakłada przezroczystość
+tint(kolor, proc) - zwiększa proporcje bieli
+shade(kolor, proc) - zwiększa proporcje czerni
+greyscale(kolor) - skala szarości
+*/
+#color-operation30 {
+  background-color: #202020;
+}
+#color-operation29 {
+  background-color: #232323;
+}
+#color-operation28 {
+  background-color: #262626;
+}
+#color-operation27 {
+  background-color: #292929;
+}
+#color-operation26 {
+  background-color: #2d2d2d;
+}
+#color-operation25 {
+  background-color: #303030;
+}
+#color-operation24 {
+  background-color: #333333;
+}
+#color-operation23 {
+  background-color: #363636;
+}
+#color-operation22 {
+  background-color: #393939;
+}
+#color-operation21 {
+  background-color: #3d3d3d;
+}
+#color-operation20 {
+  background-color: #404040;
+}
+#color-operation19 {
+  background-color: #434343;
+}
+#color-operation18 {
+  background-color: #464646;
+}
+#color-operation17 {
+  background-color: #494949;
+}
+#color-operation16 {
+  background-color: #4d4d4d;
+}
+#color-operation15 {
+  background-color: #505050;
+}
+#color-operation14 {
+  background-color: #535353;
+}
+#color-operation13 {
+  background-color: #565656;
+}
+#color-operation12 {
+  background-color: #595959;
+}
+#color-operation11 {
+  background-color: #5c5c5c;
+}
+#color-operation10 {
+  background-color: #606060;
+}
+#color-operation9 {
+  background-color: #636363;
+}
+#color-operation8 {
+  background-color: #666666;
+}
+#color-operation7 {
+  background-color: #696969;
+}
+#color-operation6 {
+  background-color: #6c6c6c;
+}
+#color-operation5 {
+  background-color: #707070;
+}
+#color-operation4 {
+  background-color: #737373;
+}
+#color-operation3 {
+  background-color: #767676;
+}
+#color-operation2 {
+  background-color: #797979;
+}
+#color-operation1 {
+  background-color: #7c7c7c;
+}
+.color-operation {
+  height: 20px;
+}
+.class-with-imported-var {
+  padding: 24px;
+}

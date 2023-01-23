@@ -1,0 +1,318 @@
+// LESS
+
+/********************************/
+/*           ZMIENNE            */
+/********************************/
+// Mogą przechowywać color, size, tekst, dowolną wartość, inną zmienną, ścieżkę do pliku, url, nazwę właściwości CSS
+@h1-size: 60px; // size
+@h1-weight: bold; // wartość właśniwości CSS
+@h1-background: rgba(255, 123, 64, 0.7); // color w formacie rgb, rgba, hsl, hsla, hsv, hsva, które są zmieniane na format rozumiany przez przeglądarkę (hex, rgb lub rgba)
+@p-border: 1px solid @p-color-after; //inna zmienna; zmienna też może być definiowana poniżej jej użycia
+@p-text-after: "Dodany tekst"; // tekst
+@p-color-after: #B80F0A; // color
+@image-height: 200px; // rozmiar
+@images-folder: './../../images'; // nazwa folderu jako tekst
+@image-extention: 'jpg'; // rozszerzenie pliku jako tekst
+@image-url: url('@{images-folder}/image.@{image-extention}'); // url; w podobnych sytuacjach nazwa zmiennej po @ musi mieścić się w nawiasach {}
+@image-back: background-image; // nazwa właściwości CSS
+@image-class: image-background; // nazwa lub część nazwy klasy
+
+.h1-variables {
+  font-size: @h1-size;
+  font-weight: @h1-weight;
+  background-color: @h1-background;
+}
+.p-variables {
+  border: @p-border;
+}
+.p-variables::after {
+  content: @p-text-after;
+  color: @p-color-after;
+}
+
+.@{image-class}-variables {
+  height: @image-height * 2; // możliwe są operacje arytmetyczne na zmiennych
+  @{image-back}: @image-url;
+}
+
+
+/********************************/
+/*            LISTY             */
+/********************************/
+@list: 1, 2, 3, "string", some-text; // lista może przechowywać różne wartości
+@list-length: length(@list); // mamy dostęp do długości listy
+@first-element: extract(@list, 1); // możemy odczytać element listy; numeracja zaczyna się od 1
+@last-element: extract(@list, length(@list)); // ostatni element można odczytać za pomocą długości listy
+
+@second-list: 1 2 3, 4, 5; // jako separator możemy używać przecinka lub spacji, ale jednoczesne wykorzystanie powoduje tworzenie włożonej listy
+@second-list-length: length(@second-list); // dlatego długość listy będzie 3 elementy, a nie 5
+@second-list-1element: extract(@second-list, 1);  // elementy oddzielone spacją utworzą włożoną listę
+@second-list-2element: extract(@second-list, 2);
+@second-list-3element: extract(@second-list, 3);
+
+#list::after {
+  content: '@{list}';
+}
+#list-lenght::after {
+  content: '@{list-length}';
+}
+#list-first-element::after {
+  content: '@{first-element}';
+}
+#list-last-element::after {
+  content: '@{last-element}';
+}
+#second-list::after {
+  content: '@{second-list}';
+}
+#second-list-length::after {
+  content: '@{second-list-length}';
+}
+#second-list-1element::after {
+  content: '@{second-list-1element}';
+}
+#second-list-2element::after {
+  content: '@{second-list-2element}';
+}
+#second-list-3element::after {
+  content: '@{second-list-3element}';
+}
+
+
+/********************************/
+/*            MIXINY            */
+/********************************/
+// mixin bez parametrów wygląda jako klasa (i rzeczywiście jest klasą), ale jest wykorzystywany w środku innego selektora
+.flex-center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+// mixin z parametrami
+.color (@color; @bg-color) {
+  color: @color;
+  background-color: @bg-color;
+}
+
+.padding (@top; @right; @bottom: 15px; @left: 10px) { // mixin może zawierać wartości domyślne
+  padding: @top @right @bottom @left;
+}
+
+.margin (@margins) {
+  margin: @margins;
+}
+
+.mixin-div {
+  .flex-center; // używanie mixina bez parametrów
+  .color (darkred, green); // używanie mixina z parametrami
+  .padding (10px, 20px, 30px); // mixin ma 4 parametry, z których 2 parametry domyślne, dlatego pierwsze 2 parametry są obowiązkowe, trzeci parametr nadpisuje domyślny, a zamiast brakującego czwartego będzie użyta wartość domyślna
+  .margin (25px 15px 30px); // mixin może przyjmować listę jako parametr
+}
+
+
+@mixin-height: 400px;
+.mixin-line {
+  width: 50px;
+  display: inline-block;
+  background-color: blue;
+}
+.divide (@a, @b: 2) {
+  @divide: (@a / @b); // mixin może zwracać zmienną jako rezultat - w tym przypadku zmienną @divide jako rezultat dzielenia @a na @b
+}
+
+#mixin-line1 {
+  .mixin-line;
+
+  .divide(@mixin-height);
+  height: @divide;
+}
+#mixin-line2 {
+  .mixin-line;
+  
+  .divide(@mixin-height, 4);
+  height: @divide;
+}
+#mixin-line3 {
+  .mixin-line;
+  
+  .divide(@mixin-height, 6);
+  height: @divide;
+}
+#mixin-line4 {
+  .mixin-line;
+  
+  .divide(@mixin-height, 8);
+  height: @divide;
+}
+
+
+// można tworzyć różne warianty tego samego mixinu
+.paragraph(color) { // wariant "color" mixinu "paragraph"
+  color: yellow;
+  background-color: green;
+  border: 5px solid red;
+}
+.paragraph(grey, @padding: 5px){ // wariant "grey" mixinu "paragraph"; ten mixin oprócz nazwy wariantu przyjmuje też parametr o nazwie "@padding" z domyślną wartością 5px
+  color: white;
+  background-color: grey;
+  padding: @padding;
+  border: 5px solid black;
+}
+
+.mixin-variabled1 {
+  .paragraph(color); // implementacja mixinu wariantywnego
+}
+.mixin-variabled2 {
+  .paragraph(grey, 15px 25px);
+}
+
+/********************************/
+/*         ZAGNIEŻDŻANIE        */
+/********************************/
+// LESS pozwala zagnieżdżać selektory
+.nesting {
+  .nesting-header {
+    color: blue;
+  }
+
+  // selektor rodzica można zaznaczyć znakiem &, po którym można kontynuować zapis selektora - w tym przypadku selektor rodzica ma nazwę ".nesting", dlatego selektor "&-content" będzie skompilowany w selektor ".nesting-content"
+  &-content {
+    color: yellow;
+  }
+
+  &-link {
+    color: green;
+
+    // pseudoklasy można używać wraz z selektorem rodzica
+    &:hover {
+      color: red;
+    }
+  }
+
+  &-footer {
+    font-size: 28px;
+
+    &::after {
+      content: 'this text is in after';
+      color: orange;
+    }
+  }
+}
+
+
+/********************************/
+/*         ROZSZERZENIE         */
+/********************************/
+.title { // mixin bez parametrów
+  font-family: 'Courier New', Courier, monospace;
+  text-align: center;
+  padding: 10px 20px;
+  color: #335500;
+}
+
+/*
+w tym przypadku kompilator "nie wie", że różne klasy wykorzystują ten sam mixin
+kompilator zgeneruje następny kod:
+.h1-not-extended {
+  font-size: 40px;
+  font-family: 'Courier New', Courier, monospace;
+  text-align: center;
+  padding: 10px 20px;
+  color: #335500;
+}
+.h2-not-extended {
+  font-size: 35px;
+  font-family: 'Courier New', Courier, monospace;
+  text-align: center;
+  padding: 10px 20px;
+  color: #335500;
+}
+.h3-not-extended {
+  font-size: 30px;
+  font-family: 'Courier New', Courier, monospace;
+  text-align: center;
+  padding: 10px 20px;
+  color: #335500;
+}
+jak widać, w klasach powtarzają się te same linijki kodu, co powoduje nadmiar obiętości pliku CSS
+*/
+.h1-not-extended {
+  font-size: 40px;
+  .title;
+}
+.h2-not-extended {
+  font-size: 35px;
+  .title;
+}
+.h3-not-extended {
+  font-size: 30px;
+  .title;
+}
+
+/*
+w przypadku wykorzystania pseudoklasy ":extend()" kompilator "wie", że różne klasy będą mieć ten sam fragment kodu
+zgenerowany kod wygląda następująco:
+.title,
+.h1-extended,
+.h2-extended,
+.h3-extended {
+  font-family: 'Courier New', Courier, monospace;
+  text-align: center;
+  padding: 10px 20px;
+  color: #335500;
+}
+.h1-extended {
+  font-size: 40px;
+}
+.h2-extended {
+  font-size: 35px;
+}
+.h3-extended {
+  font-size: 30px;
+}
+wszystkie powtarzające się elementy są w jednym miejscu, dlatego obiętość kodu jest mniejsza
+*/
+.h1-extended {
+  font-size: 40px;
+  &:extend(.title);
+}
+.h2-extended {
+  font-size: 35px;
+  &:extend(.title);
+}
+.h3-extended {
+  font-size: 30px;
+  &:extend(.title);
+}
+
+
+/********************************/
+/*   SCALANIE LIST WŁAŚCIWOŚCI  */
+/********************************/
+.mixin-shadow {
+  box-shadow+: inset 0 0 10px #555; // znak "+" oznacza, że ta właściwość może być scalana
+}
+
+.mixin-div-with-shadow-incorrect {
+  .mixin-shadow;
+  box-shadow: 0 0 20px black; // w tym przypadku właściwość "box-shadow" z mixinu będzie po prostu nadpisana
+  padding: 15px;
+}
+
+.mixin-div-with-shadow-correct {
+  .mixin-shadow;
+  box-shadow+: 0 0 20px black; // znak "+" oznacza, że właściwość "box-shadow" będzie rozszerzona na właściwość z mixina; jeżeli po znaku "+" wpisać znak "_" to separatorem przy scalaniu będzie nie przecinek, a spacja
+  padding: 15px;
+}
+
+
+/********************************/
+/*           IMPORTY            */
+/********************************/
+@import 'part2';
+@import 'part3';
+
+.class-with-imported-var {
+  padding: @var-from-second-file;
+}

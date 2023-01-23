@@ -1,0 +1,78 @@
+/********************************/
+/*     OPERACJE NA KOLORACH     */
+/********************************/
+/*
+hsl($hue, $saturation, $lightness)
+hsla($hue, $saturation, $lightness, $alpha)
+hue($color)
+saturation($color)
+lightness($color)
+darken($color, $amount)
+saturate($color, $amount)
+desaturate($color, $amount)
+grayscale($color)
+complement($color)
+invert($color, [$weight])
+alpha($color) / opacity($color)
+rgba($color, $alpha)
+opacify($color, $amount)
+transparentize($color, $amount)
+adjust-color($color, [$red], [$green], [$blue], [$hue], [$saturation], [$lightness], [$alpha])
+scale-color($color, [$red], [$green], [$blue], [$saturation], [$lightness], [$alpha])
+change-color($color, [$red], [$green], [$blue], [$hue], [$saturation], [$lightness], [$alpha])
+ie-hex-str($color)
+*/
+.color-operation {
+  width: 50px;
+  height: 50px;
+  display: inline-block;
+  background-color: rgb(red(#CA3827), green(#00CA33), blue(#3728CA));
+}
+
+
+/********************************/
+/*    OPERACJE MATEMATYCZNE     */
+/********************************/
+/*
+percentage($number)
+round($number)
+ceil($number)
+floor($number)
+abs($number)
+min($numbers...)
+max($numbers...)
+random([$limit])
+*/
+$random: -1 * random();
+
+#div-random::after {
+  content: '#{$random}';
+}
+
+#div-percentage::after {
+  content: '#{percentage($random)}';
+}
+
+#div-round::after {
+  content: '#{round($random)}';
+}
+
+#div-ceil::after {
+  content: '#{ceil($random)}';
+}
+
+#div-floor::after {
+  content: '#{floor($random)}';
+}
+
+#div-abs::after {
+  content: '#{abs($random)}';
+}
+
+#div-min::after {
+  content: '#{min($random, -0.2, -0.4, -0.8)}';
+}
+
+#div-max::after {
+  content: '#{max($random, -0.2, -0.4, -0.8)}';
+}

@@ -1,0 +1,35 @@
+.page2 {
+  &-container {
+    height: 400px;
+
+    display: grid;
+    // grid-template-columns: repeat(3, 1fr);
+    // grid-template-columns: [startline] 1fr [mainline] 1fr 1fr [endline];
+    // grid-auto-rows: 100px;
+    // gap: 10px;
+
+    // grid-auto-flow: column;
+    // grid-auto-flow: dense;
+
+    background-color: #07229b;
+    margin: 20px;
+  }
+
+  &-item {
+    text-align: center;
+    color: white;
+    border: 2px solid orange;
+  }
+}
+
+#page2-item1 {
+  // grid-column-start: 1;
+  // grid-column-end: -1;
+  // grid-column: 1 / -1;
+
+  // grid-column-start: 1;
+  // grid-column-end: span 2;
+
+  // grid-column-start: mainline;
+  // grid-column-end: endline;
+}

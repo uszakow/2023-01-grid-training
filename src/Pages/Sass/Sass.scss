@@ -1,0 +1,359 @@
+// Sass
+
+/********************************/
+/*           ZMIENNE            */
+/********************************/
+$h2-color: rgb(200, 146, 0); // color, może być w formie hex, rgb, rgba
+$h2-weight: bold; // wartość właściwości CSS
+$h2-size: 26px; // rozmiar
+$p-border: 4px double $h2-color; // inna zmienna
+$p-text-after: 'Dodany tekst'; // tekst
+$images-folder: './../../images'; // nazwa folderu jako tekst
+$image-extention: 'jpg'; // rozszerzenie pliku jako tekst
+$image-url: url('#{$images-folder}/image.#{$image-extention}'); // url; nazwy zmiennych mają być w środku konstrukcji #{}
+$image-selector: -div-image; // nazwa lub część nazwy klasy
+$image-back: background-image; // nazwa właściwości CSS
+
+.variables-h2 {
+  font-weight: $h2-weight;
+  font-size: $h2-size;
+  color: $h2-color;
+}
+
+.variables-p {
+  border: $p-border;
+}
+
+.variables-p::after {
+  content: $p-text-after;
+}
+
+.variables#{$image-selector} {
+  height: 300px;
+  #{$image-back}: $image-url;
+}
+
+
+/********************************/
+/*            LISTY             */
+/********************************/
+$list: 1, 2, 3, "string", some-text; // lista może przechowywać różne wartości
+$list-length: length($list); // mamy dostęp do długości listy
+$first-element: nth($list, 1); // możemy odczytać element listy; numeracja zaczyna się od 1
+$last-element: nth($list, length($list)); // ostatni element można odczytać za pomocą długości listy
+
+$second-list: 1 2 3, 4, 5; // jako separator możemy używać przecinka lub spacji, ale jednoczesne wykorzystanie powoduje tworzenie włożonej listy
+$second-list-length: length($second-list); // dlatego długość listy będzie 3 elementy, a nie 5
+$second-list-1element: nth($second-list, 1); // elementy oddzielone spacją utworzą włożoną listę
+$second-list-2element: nth($second-list, 2);
+$second-list-3element: nth($second-list, 3);
+
+#list::after {
+  content: '#{$list}';
+}
+
+#list-lenght::after {
+  content: '#{$list-length}';
+}
+
+#list-first-element::after {
+  content: '#{$first-element}';
+}
+
+#list-last-element::after {
+  content: '#{$last-element}';
+}
+
+#second-list::after {
+  content: '#{$second-list}';
+}
+
+#second-list-length::after {
+  content: '#{$second-list-length}';
+}
+
+#second-list-1element::after {
+  content: '#{$second-list-1element}';
+}
+
+#second-list-2element::after {
+  content: '#{$second-list-2element}';
+}
+
+#second-list-3element::after {
+  content: '#{$second-list-3element}';
+}
+
+
+/********************************/
+/*            MIXINY            */
+/********************************/
+// mixin bez parametrów
+@mixin flex-center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+// mixin z parametrami
+@mixin color ($color, $bg-color) {
+  color: $color;
+  background-color: $bg-color;
+}
+
+@mixin padding ($top, $right, $bottom: 15px, $left: 10px) {
+  // mixin może zawierać wartości domyślne
+  padding: $top $right $bottom $left;
+}
+
+@mixin margin ($margins) {
+  margin: $margins;
+}
+
+@mixin div-style ($margins) {
+  border: 1px dotted orange;
+  @include margin ($margins); // mixin może przyjmować inny mixin
+}
+
+@mixin html-style {
+
+  html,
+  // mixin może mieć selektory w środku
+  body {
+    padding: 0;
+    margin: 0;
+  }
+}
+
+@include html-style; // mixin może być wywołany globalnie
+
+@mixin shadow ($par...) {
+  // mixin może przyjmować dowolną, bliżej nieokreśloną, liczbę parametrów
+  box-shadow: $par;
+}
+
+.mixin-div {
+  @include flex-center; // używanie mixina bez parametrów
+  @include color (darkred, green); // używanie mixina z parametrami
+  @include padding (10px, 20px, 30px); // mixin ma 4 parametry, z których 2 parametry domyślne, dlatego pierwsze 2 parametry są obowiązkowe, trzeci parametr nadpisuje domyślny, a zamiast brakującego czwartego będzie użyta wartość domyślna
+  @include div-style (25px 15px 30px); // mixin może przyjmować listę jako parametr
+  @include shadow(3px 3px 2px #222, 5px 5px 10px red, 10px 10px 20px blue); // wywołanie mixina, który przyjmuje dowolną liczbę parametrów
+}
+
+
+/********************************/
+/*         ZAGNIEŻDŻANIE        */
+/********************************/
+// w Sass zagnieżdżanie działa w taki sam sposób jak w LESS
+.nesting {
+  .nesting-header {
+    color: blue;
+  }
+
+  // selektor rodzica można zaznaczyć znakiem &, po którym można kontynuować zapis selektora - w tym przypadku selektor rodzica ma nazwę ".nesting", dlatego selektor "&-content" będzie skompilowany w selektor ".nesting-content"
+  &-content {
+    color: yellow;
+  }
+
+  &-link {
+    color: green;
+
+    // pseudoklasy można używać wraz z selektorem rodzica
+    &:hover {
+      color: red;
+    }
+  }
+
+  &-footer {
+    font-size: 28px;
+
+    &::after {
+      content: 'this text is in after';
+      color: orange;
+    }
+  }
+}
+
+
+/********************************/
+/*            FUNKCJE           */
+/********************************/
+// funckje nie występują w LESS, ale są dostępne w Sass
+$function-div-height: 400px;
+
+// funkcje są tworzone za pomocą kluczowego słowa "@function" i zwrotu rezultatu po kluczowym słowie "@return"
+@function division ($a, $b: 2) {
+  @return calc($a / $b);
+}
+
+.function-line {
+  width: 50px;
+  display: inline-block;
+  background-color: blue;
+}
+
+#function-line1 {
+  height: division($function-div-height); // wywołanie funckji
+}
+
+#function-line2 {
+  height: division($function-div-height, 4);
+}
+
+#function-line3 {
+  height: division($function-div-height, 6);
+}
+
+#function-line4 {
+  height: division($function-div-height, 8);
+}
+
+
+/********************************/
+/*  ROZSZERZENIE, PLACEHOLDER   */
+/********************************/
+/*
+przykład kodu bez rozszerzenia, w których różne klasy odrębnie używają ten sam mixin:
+.h1-not-extended {
+  font-size: 40px;
+  font-family: "Courier New", Courier, monospace;
+  text-align: center;
+  padding: 10px 20px;
+  color: #335500;
+}
+
+.h2-not-extended {
+  font-size: 35px;
+  font-family: "Courier New", Courier, monospace;
+  text-align: center;
+  padding: 10px 20px;
+  color: #335500;
+}
+
+.h3-not-extended {
+  font-size: 30px;
+  font-family: "Courier New", Courier, monospace;
+  text-align: center;
+  padding: 10px 20px;
+  color: #335500;
+}
+wszystkie właściwości oprócz "font-size" powtarzają się w każdej klasie
+*/
+@mixin title {
+  font-family: 'Courier New', Courier, monospace;
+  text-align: center;
+  padding: 10px 20px;
+  color: #335500;
+}
+
+.h1-not-extended {
+  font-size: 40px;
+  @include title;
+}
+
+.h2-not-extended {
+  font-size: 35px;
+  @include title;
+}
+
+.h3-not-extended {
+  font-size: 30px;
+  @include title;
+}
+
+/*
+przykład wykorzystania rozszerzenia istniejącej klasy:
+.title, .h3-extended, .h2-extended, .h1-extended {
+  font-family: "Courier New", Courier, monospace;
+  text-align: center;
+  padding: 10px 20px;
+  color: #335500;
+}
+
+.h1-extended {
+  font-size: 40px;
+}
+
+.h2-extended {
+  font-size: 35px;
+}
+
+.h3-extended {
+  font-size: 30px;
+}
+w finalnym kodzie wszystkie wspólne wartości z rozszerzanej klasy .title są w jednym miejscu, ale też istnieje klasa .title, która w tym przypadku nigdzie nie jest wykorzystywana
+*/
+.title {
+  // rozszerzana klasa
+  font-family: 'Courier New', Courier, monospace;
+  text-align: center;
+  padding: 10px 20px;
+  color: #335500;
+}
+
+.h1-extended {
+  font-size: 40px;
+  @extend .title; // użycie klasy
+}
+
+.h2-extended {
+  font-size: 35px;
+  @extend .title;
+}
+
+.h3-extended {
+  font-size: 30px;
+  @extend .title;
+}
+
+/*
+przykład rozszerzenia z placeholdera:
+.h3-extended-placeholder, .h2-extended-placeholder, .h1-extended-placeholder {
+  font-family: "Courier New", Courier, monospace;
+  text-align: center;
+  padding: 10px 20px;
+  color: #335500;
+}
+
+.h1-extended-placeholder {
+  font-size: 40px;
+}
+
+.h2-extended-placeholder {
+  font-size: 35px;
+}
+
+.h3-extended-placeholder {
+  font-size: 30px;
+}
+jak widać, w wynikowym kodzie nie tworzy się klasa, która potem nie jest wykorzystywana
+*/
+%title-placeholder {
+  // placeholder
+  font-family: 'Courier New', Courier, monospace;
+  text-align: center;
+  padding: 10px 20px;
+  color: #335500;
+}
+
+.h1-extended-placeholder {
+  font-size: 40px;
+  @extend %title-placeholder; // użycie placeholdera
+}
+
+.h2-extended-placeholder {
+  font-size: 35px;
+  @extend %title-placeholder;
+}
+
+.h3-extended-placeholder {
+  font-size: 30px;
+  @extend %title-placeholder;
+}
+
+
+/********************************/
+/*           IMPORTY            */
+/********************************/
+@import 'part2';
+@import 'part3';
